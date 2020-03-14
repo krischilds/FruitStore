@@ -15,6 +15,8 @@ app.listen(HTTP_PORT, () => {
 });
 
 app.use(cors());
+
+// Return all fruit
 app.get("/api/fruit", (req, res, next) => {
     var sql = "select * from fruit_data"
     var params = []
