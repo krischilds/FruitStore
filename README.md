@@ -7,6 +7,7 @@ The application demonstrates the following features:
    <li>Loads/Saves data to the back-end API if it is running.</li>
    <li>Displays data as a table and chart</li>   
    <li>Persists data in a SqlLite DB</li>   
+   <li>Front-End uses custom styling per the instructions of this exercise</li>
    <li>The Front-End is deployed on AWS</li>
 </uL>
 
