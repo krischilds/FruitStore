@@ -1,88 +1,68 @@
 import React, { Component } from 'react'
-import FruitForm from "./FruitForm";
+import FruitReport from "./FruitReport";
+import moment from 'moment';
+import { config } from "../../config";
 import "./fruit-report.css";
-import FruitTable from './FruitTable';
-import FruitChart from './FruitChart';
-
-// NOTE: Only use mock data if the Back_End is not running or not returning data
-const mock =
-    [
-        { date: "2019-01-07 00:00:00", bananas: 401, strawberries: 58, apples: 290, oranges: 191 },
-        { date: "2019-02-07 00:00:00", bananas: 354, strawberries: 98, apples: 132, oranges: 123 },
-        { date: "2019-03-07 00:00:00", bananas: 512, strawberries: 120, apples: 321, oranges: 159 },
-        { date: "2019-04-07 00:00:00", bananas: 287, strawberries: 75, apples: 214, oranges: 187 }
-    ];
+import Mock from "./Mock";
 
 export default class FruitContainer extends Component {
     constructor(props) {
         super(props);
 
+        console.log(props);
+        console.log(props.match.params);
+
         // initialize startDate and endDate with today's date
-        const today = new Date();
-        const m = today.getMonth() + 1; // m = month 1..12
-        const month = m < 9 ? `0${m}` : m;
-        const dateStr = today.getFullYear() + '-' + month + '-' + today.getDate();
+        const dateStr = moment().format('YYYY-MM-DD');
+
+        // Note: only use mock when backend is not running
+        this.mock = new Mock();
 
         this.state = {
-            data: null,
+            fruitData: null,
             startDate: dateStr,
             endDate: dateStr,
             loadedFruitData: false
         };
 
-        this.handleChangeStartDate.bind(this);
-        this.handleChangeEndDate.bind(this);
+        this.updateDateFilter.bind(this);
     }
 
-    handleChangeStartDate = event => {
-        this.setState({ startDate: event.target.value });
-    };
+    updateDateFilter = (startDate, endDate) => {
+        this.setState({ startDate, endDate });
+    }
 
-    handleChangeEndDate = event => {
-        this.setState({ endDate: event.target.value });
-    };
-
-    componentDidMount() {
-        // load fruit from API
-        fetch('http://localhost:8000/api/fruit')
+    loadFruitData = () => {
+        fetch(`${config.apiUrl}/api/fruit`)
             .then(response => response.json())
             .then(data => {
                 if (data && data.data && data.data.length) {
                     this.setState({
-                        data: data.data,
+                        fruitData: data.data,
                         loadedFruitData: true
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
-                // fallback to mock data
-                this.setState({ data: mock, loadedFruitData: true });
+                // fallback to mock data if API fails                
+                this.setState({ fruitData: this.mock.getData(), loadedFruitData: true });
             });
     }
 
+    componentDidMount() {
+        // load fruit from API
+        this.loadFruitData();
+    }
+
     render() {
-        const filteredData = this.filterDataByDateRange(this.state.startDate, this.state.endDate, this.state.data);
+        const filteredData = this.filterDataByDateRange(this.state.startDate, this.state.endDate, this.state.fruitData);
         return (
-            <div style={{ margin: "20px" }}>
-                <h4 className="page-title">Fruit Report</h4>
-                <FruitForm
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    handleChangeStartDate={this.handleChangeStartDate}
-                    handleChangeEndDate={this.handleChangeEndDate}
-                />
-                <hr />
-                <FruitTable
-                    fruitData={filteredData}
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate} />
-                <hr />
-                <FruitChart
-                    fruitData={filteredData}
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate} />
-            </div>
+            <FruitReport
+                fruitData={filteredData}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                updateDateFilter={this.updateDateFilter} />
         )
     }
 
@@ -96,8 +76,7 @@ export default class FruitContainer extends Component {
                 return true
             }
 
-            let dateStr = row.date.slice(0, 10);
-            let d = new Date(dateStr);
+            let d = new Date(row.date);
             let sd = new Date(startDate);
             let ed = new Date(endDate);
             return this.verifyDateRange(d, sd, ed);
@@ -116,5 +95,4 @@ export default class FruitContainer extends Component {
     verifyDateRange = (d, sd, ed) => {
         return (d >= sd && d <= ed)
     }
-
 }
