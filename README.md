@@ -14,15 +14,17 @@ The application demonstrates the following features:
 
 ### Demo
 
-[Front-End AWS](https://master.d3jzwg8oxiglpc.amplifyapp.com/)
-[Front-End Azure](https://fruitstoreapi.azurewebsites.net/)
-[Back-End Azure](https://fruitstoreapp.azurewebsites.net/)
+[Front-End: AWS](https://master.d3jzwg8oxiglpc.amplifyapp.com/)
+
+[Front-End: Azure](https://fruitstoreapp.azurewebsites.net/)
+
+[Back-End: Azure](https://fruitstoreapi.azurewebsites.net/)
 
 <ul>
    <li>API: Get Fruit<br/>
-   https://fruitstoreapp.azurewebsites.net/api/fruit (HTTP GET)</li>
+   https://fruitstoreapi.azurewebsites.net/api/fruit (HTTP GET)</li>
    <li>API: Add Sales<br/>
-   https://fruitstoreapp.azurewebsites.net/api/fruit (HTTP POST)<br/>
+   https://fruitstoreapi.azurewebsites.net/api/fruit (HTTP POST)<br/>
    POST body:<br/>   
       <code>{
          date: string,
@@ -59,6 +61,6 @@ The application demonstrates the following features:
 <ul>   
    <li>The back-end API base url can be configured by updating <b>Front-End/src/config.js</b>.</li>
    <li>If the Back-End API is not running, the Front-End will fallback to using a mock object to display data.</li>
-   <li>Currently the Back-End API deletes data each time it is restarted.</li>
+   <li>Currently the Back-End API deletes data each time it is restarted. This will only happen on the demo if new code is deployed or the app is manually restarted.</li>
 </ul>
 
