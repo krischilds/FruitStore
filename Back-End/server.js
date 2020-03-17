@@ -17,10 +17,15 @@ app.listen(port, () => {
 
 app.use(cors());
 
+
+// Root path
 app.get("/", (req, res, next) => {
-    res.json({
-        "message": "Back-End API Service"
-    })
+    res.json({ "message": "Ok" })
+});
+
+// API version
+app.get("/api/version", (req, res, next) => {
+    res.json({ "version": "1.0" })
 });
 
 // Return all fruit
@@ -39,6 +44,7 @@ app.get("/api/fruit", (req, res, next) => {
     });
 });
 
+// Add a fruit sales for a given date
 app.post("/api/fruit/", (req, res, next) => {
     var errors = []
     if (!req.body.date) {
@@ -72,30 +78,3 @@ app.post("/api/fruit/", (req, res, next) => {
         })
     });
 })
-
-app.get("/api/fruit/:fruit", (req, res, next) => {
-
-    const fruitParam = req.params.fruit
-    console.log(fruitParam)
-    var sql = `select date,  ${fruitParam} from fruit_prices`
-    var params = [req.params.fruit]
-    fdb.get(sql, null, (err, row) => {
-        if (err) {
-            res.status(400).json({ "error": err.message });
-            return;
-        }
-        res.json({
-            "message": "success",
-            "data": row
-        })
-    });
-});
-
-
-
-
-// Root path
-app.get("/", (req, res, next) => {
-    res.json({ "message": "Ok" })
-});
-

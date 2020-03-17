@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose()
-const DBSOURCE = "db.sqlite"
-//const DBSOURCE = ":memory:"
+//const DBSOURCE = "db.sqlite"
+const DBSOURCE = ":memory:"
 
 
 let fruitDb = new sqlite3.Database(DBSOURCE, (err) => {
