@@ -23,19 +23,17 @@ The application demonstrates the following features:
    https://fruitstoreapp.azurewebsites.net/api/fruit (HTTP GET)</li>
    <li>API: Add Sales<br/>
    https://fruitstoreapp.azurewebsites.net/api/fruit (HTTP POST)<br/>
-   POST body:<br/>
-   <pre>
-      {
-         date: <string>,
-         bananas: <number>,
-         apples: <number>,
-         strawberries: <number>,
-         oranges: <number>
-      }
+   POST body:<br/>   
+      <code>{
+         date: string,
+         bananas: number,
+         apples: number,
+         strawberries: number,
+         oranges: number
+         }</code>
    </pre>
    </li>
 </ul>   
-
    
 ### Deploy and Run locally
 
